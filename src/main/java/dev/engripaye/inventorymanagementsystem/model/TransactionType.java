@@ -5,6 +5,6 @@ public enum TransactionType {
     INBOUND,
     OUTBOUND,
     ADJUSTMENT,
-    TRANSACTION_IN,
-    TRANSACTION_OUT
+    TRANSFER_IN,
+    TRANSFER_OUT
 }
