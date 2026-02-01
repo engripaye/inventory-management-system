@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: inventory-management-system
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/inventory_db
+    username: root
+    password: 1234567
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
