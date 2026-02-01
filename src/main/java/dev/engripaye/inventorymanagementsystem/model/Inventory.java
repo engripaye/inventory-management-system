@@ -1,9 +1,26 @@
 package dev.engripaye.inventorymanagementsystem.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "inventory", )
+@Table(name = "inventory",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id"}))
 public class Inventory {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
+    private WareHouse wareHouse;
+
+    private int quantity;
+
+    private LocalDateTime lastUpdated;
+
 }
