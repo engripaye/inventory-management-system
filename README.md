@@ -1,8 +1,6 @@
----
-
 # 📦 Inventory Management System (Java + Spring Boot)
 
-> **A production-style Inventory Management System built with modern Java and Spring Boot, focusing on clean architecture, real-world business rules, and recruiter-ready backend design.**
+**A production-style Inventory Management System built with modern Java and Spring Boot, focusing on clean architecture, real-world business rules, and recruiter-ready backend design.**
 
 This project simulates how inventory systems are built in real companies — **not toy code**.
 It demonstrates proper layering, transactional consistency, audit trails, and stock validation.
