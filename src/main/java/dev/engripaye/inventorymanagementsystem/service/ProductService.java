@@ -1,6 +1,7 @@
 package dev.engripaye.inventorymanagementsystem.service;
 
 import dev.engripaye.inventorymanagementsystem.dto.ProductRequest;
+import dev.engripaye.inventorymanagementsystem.exception.ResourceNotFoundException;
 import dev.engripaye.inventorymanagementsystem.model.Product;
 import dev.engripaye.inventorymanagementsystem.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;

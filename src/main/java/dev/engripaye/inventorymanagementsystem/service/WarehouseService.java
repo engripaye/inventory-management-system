@@ -1,5 +1,6 @@
 package dev.engripaye.inventorymanagementsystem.service;
 
+import dev.engripaye.inventorymanagementsystem.exception.ResourceNotFoundException;
 import dev.engripaye.inventorymanagementsystem.model.WareHouse;
 import dev.engripaye.inventorymanagementsystem.repository.WareHouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class WarehouseService {
     }
 
     public WareHouse getWarehouseByid(Long id){
-        return wareHouseRepository.findById(id).orElseThrow(() -> ResourceNotFoundException("Warehouse not found"));
+        return wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
     }
 
     public List<WareHouse> getAllWarehouses(){
