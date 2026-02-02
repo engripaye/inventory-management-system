@@ -1,151 +1,130 @@
-# 📦 Inventory Management System (Java + Spring Boot)
+## 📦 Inventory Management System (Backend)
 
-**A production-style Inventory Management System built with modern Java and Spring Boot, focusing on clean architecture, real-world business rules, and recruiter-ready backend design.**
-
-This project simulates how inventory systems are built in real companies — **not toy code**.
-It demonstrates proper layering, transactional consistency, audit trails, and stock validation.
+A production-style **Inventory Management System backend** built with **Java 21** and **Spring Boot 3**, designed to demonstrate real-world backend engineering skills including transactional integrity, clean architecture, and RESTful API design.
 
 ---
 
-## 🚀 Tech Stack
+## 🚀 Features
+
+* Product management
+* Warehouse management
+* Inventory tracking per warehouse
+* Inventory transactions:
+
+  * Inbound
+  * Outbound
+  * Adjustment
+  * Transfers
+* Stock validation (prevents negative inventory)
+* Transaction audit trail
+* Global exception handling
+* Input validation
+* Clean layered architecture
+
+---
+
+## 🛠 Tech Stack
 
 * **Java 21**
-* **Spring Boot 3.5+**
-* Spring Web (REST APIs)
+* **Spring Boot 3**
+* Spring Web
 * Spring Data JPA
+* Hibernate
 * MySQL
 * Lombok
-* Bean Validation (Jakarta Validation)
-* Hibernate
-* Docker (planned)
-* Clean Layered Architecture
+* Maven
 
 ---
 
-## 🎯 Key Features
+## 🧱 Architecture
 
-✔ Product management (SKU-based)
-✔ Warehouse / location management
-✔ Inventory tracking per product per warehouse
-✔ Inventory transactions:
+```
+Controller → Service → Repository → Database
+```
 
-* Inbound
-* Outbound
-* Adjustments
-* Transfers
+Each layer has a clear responsibility:
 
-✔ Stock validation (no negative inventory allowed)
-✔ Full audit trail of inventory movements
-✔ Transactional consistency
-✔ RESTful APIs
-✔ Recruiter-friendly project structure
+* **Controller**: API contracts
+* **Service**: Business logic & transactions
+* **Repository**: Data access
+* **Model**: Domain entities
 
 ---
 
-## 🧱 Project Architecture
+## 🗄 Database Design (Core Tables)
 
-This project follows a **clean layered architecture** similar to production systems:
+* `product`
+* `warehouse`
+* `inventory`
+* `inventory_transaction`
+
+Inventory is uniquely tracked by:
 
 ```
-controller  →  service  →  repository  →  database
-```
-
-### Package Structure
-
-```
-com.yourname.inventory
-│
-├── config
-├── controller
-├── service
-├── repository
-├── model
-├── dto
-└── exception
-```
-
-📌 This separation improves:
-
-* maintainability
-* testability
-* scalability
-
----
-
-## 🗂️ Core Domain Model
-
-### Product
-
-Represents an item tracked in inventory.
-
-* Unique SKU
-* Pricing
-* Active flag
-* Audit timestamps
-
-### Warehouse
-
-Represents a physical or logical storage location.
-
-### Inventory
-
-Tracks **current stock level per product per warehouse**
-Enforced with a unique constraint.
-
-### InventoryTransaction
-
-Stores a **complete audit log** of all stock movements.
-
-### Transaction Types
-
-```java
-INBOUND, OUTBOUND, ADJUSTMENT, TRANSFER_IN, TRANSFER_OUT
+(product_id + warehouse_id)
 ```
 
 ---
 
-## 🧠 Business Logic Highlights
+## 🔁 Inventory Transaction Flow
 
-### Stock Integrity
+1. Validate product and warehouse
+2. Fetch or create inventory record
+3. Apply transaction logic:
 
-* Inventory **can never go negative**
-* All updates are transactional
+   * INBOUND → add stock
+   * OUTBOUND → reduce stock
+   * ADJUSTMENT → reset stock
+4. Prevent negative stock
+5. Persist transaction audit record
 
-### Transaction Processing
+All operations are **atomic and transactional**.
 
-* Stock is calculated based on transaction type
-* Each transaction is persisted for auditing
-* Inventory is auto-created if missing
+---
 
-```java
-@Transactional
-public void processTransaction(...) {
-    // calculate new stock
-    // validate quantity
-    // persist inventory
-    // persist transaction audit
+## 📡 API Endpoints
+
+### Products
+
+```
+POST   /api/products
+GET    /api/products
+GET    /api/products/{id}
+```
+
+### Warehouses
+
+```
+POST   /api/warehouses
+GET    /api/warehouses
+GET    /api/warehouses/{id}
+```
+
+### Inventory Transactions
+
+```
+POST   /api/inventory/transaction
+```
+
+---
+
+## 📥 Sample Inventory Transaction Request
+
+```json
+{
+  "productId": 1,
+  "warehouseId": 1,
+  "transactionType": "INBOUND",
+  "quantity": 50,
+  "reference": "Initial stock"
 }
 ```
-
-📌 This mirrors **real enterprise inventory systems**.
-
----
-
-## 🔌 REST API Capabilities
-
-* Create and manage products
-* Register warehouses
-* Perform inventory transactions
-* Track inventory levels
-* Audit all stock movements
-
-📦 APIs are **Postman-ready** and designed with REST best practices.
 
 ---
 
 ## ⚙️ Configuration
 
-### `application.yml`
+Update `application.yml` with your MySQL credentials:
 
 ```yaml
 spring:
@@ -153,67 +132,40 @@ spring:
     url: jdbc:mysql://localhost:3306/inventory_db
     username: root
     password: password
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-server:
-  port: 8080
 ```
 
 ---
 
-## 🧪 Validation & Error Handling
+## ▶️ How to Run
 
-* Bean validation for request payloads
-* Centralized exception handling
-* Meaningful API error responses
-* Business-rule enforcement at service layer
+1. Clone the repository
+2. Create MySQL database `inventory_db`
+3. Run the application:
 
----
-
-## 🐳 Docker Support (Planned)
-
-Upcoming improvements:
-
-* Dockerized Spring Boot service
-* MySQL container
-* `docker-compose.yml` for local setup
+   ```bash
+   mvn spring-boot:run
+   ```
+4. Test APIs using Postman
 
 ---
 
-## 📈 Why This Project Stands Out
+## 🎯 Purpose of This Project
 
-✔ Uses **modern Java (21)**
-✔ Follows **real-world backend patterns**
-✔ Demonstrates **business rule enforcement**
-✔ Clean architecture & naming
-✔ Not a tutorial clone
-✔ Built like a **job-ready backend service**
+This project was built to demonstrate:
 
----
-
-## 🔜 Roadmap
-
-* [ ] REST Controllers & DTOs
-* [ ] Validation & global exception responses
-* [ ] Sample API flows (Inbound / Outbound)
-* [ ] Docker + MySQL
-* [ ] Swagger / OpenAPI documentation
-* [ ] Unit & integration tests
+* Backend system design
+* Transactional business logic
+* Clean code practices
+* Enterprise-ready Spring Boot development
 
 ---
 
-## 👨‍💻 Author
+## 👤 Author
 
-**Olabowale Babatunde Ipaye**
-Backend / Full-Stack Java Developer
-Focused on building clean, scalable, production-ready systems.
+**Olabowale**
+Junior Backend Developer (Java & Spring Boot)
 
 ---
 
-> **Next: Controllers** 🚀
+You’re no longer “just applying”.
+You’re building leverage now. 💪
