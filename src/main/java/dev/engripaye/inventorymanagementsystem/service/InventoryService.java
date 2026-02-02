@@ -1,9 +1,6 @@
 package dev.engripaye.inventorymanagementsystem.service;
 
-import dev.engripaye.inventorymanagementsystem.model.Inventory;
-import dev.engripaye.inventorymanagementsystem.model.Product;
-import dev.engripaye.inventorymanagementsystem.model.TransactionType;
-import dev.engripaye.inventorymanagementsystem.model.WareHouse;
+import dev.engripaye.inventorymanagementsystem.model.*;
 import dev.engripaye.inventorymanagementsystem.repository.InventoryRepository;
 import dev.engripaye.inventorymanagementsystem.repository.InventoryTransactionalRepository;
 import jakarta.transaction.Transactional;
@@ -33,7 +30,7 @@ public class InventoryService {
                 product, wareHouse
         ).orElseGet(() -> createInventory(product, wareHouse));
 
-        int newQty = switch (type) {
+        int newQty = switch (transactionType) {
             case INBOUND, TRANSFER_IN -> inventory.getQuantity() + quantity;
             case OUTBOUND, TRANSFER_OUT -> inventory.getQuantity() - quantity;
             case ADJUSTMENT -> quantity;
@@ -47,6 +44,23 @@ public class InventoryService {
 
         inventory.setQuantity(newQty);
         inventory.setLastUpdated(LocalDateTime.now());
+        inventoryRepository.save(inventory);
+
+        InventoryTransaction tx = new InventoryTransaction();
+        tx.setProduct(product);
+        tx.setWareHouse(wareHouse);
+        tx.setTransactionType(transactionType);
+        tx.setQuantity(quantity);
+        tx.setReference(reference);
+
+        transactionalRepository.save(tx);
     }
 
+    private Inventory createInventory(Product product, WareHouse wareHouse){
+        Inventory inv = new Inventory();
+        inv.setProduct(product);
+        inv.setWareHouse(wareHouse);
+        inv.setQuantity(0);
+        return inv;
+    }
 }
