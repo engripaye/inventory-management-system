@@ -46,7 +46,7 @@ public class InventoryService {
         }
 
         inventory.setQuantity(newQty);
-        inventory.SetLastUpdated(LocalDateTime.now());
+        inventory.setLastUpdated(LocalDateTime.now());
     }
 
 }
