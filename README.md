@@ -1,4 +1,4 @@
-### 📦 Inventory Management System (Backend)
+## 📦 Inventory Management System (Backend)
 
 A production-style **Inventory Management System backend** built with **Java 21** and **Spring Boot 3**, designed to demonstrate real-world backend engineering skills including transactional integrity, clean architecture, and RESTful API design.
 
