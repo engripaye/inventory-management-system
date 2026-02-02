@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -27,5 +29,7 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
-
+    public List<Product> getAllProducts(){
+        return productRepository.findAll();
+    }
 }
