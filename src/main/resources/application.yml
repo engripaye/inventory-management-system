@@ -1,11 +1,8 @@
 spring:
-  application:
-    name: inventory-management-system
-
   datasource:
-    url: jdbc:mysql://localhost:3306/inventory_db
-    username: root
-    password: 1234567
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/inventory_db}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
 
   jpa:
     hibernate:
@@ -14,10 +11,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
-
-server:
-  port: 8080
